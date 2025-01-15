@@ -7,11 +7,13 @@
                         @nodeClick="nodeClick"
                         :maxLevel="maxLevel">
         <template slot="rowContent" slot-scope="{row}">
-          <el-select style="width: 140px;" size="mini" v-model="row.attribute" placeholder="请选择">
-            <el-option label="姓名" value="name"></el-option>
-            <el-option label="年龄" value="age"></el-option>
-            <el-option label="性别" value="sex"></el-option>
-          </el-select>
+          <select-tree
+            v-model="row.attribute"
+            :data="treeOptions"
+            size="mini"
+            filterable
+            clearable
+          />
 
           <el-select style="width: 100px" size="mini" v-model="row.symbol" placeholder="请选择">
             <el-option label="==" value="=="></el-option>
@@ -42,14 +44,19 @@
 
 <script>
 import ConditionConfig from './components/ConditionalConfig'
+import SelectTree from './components/SelectTree'
 
 export default {
   name: 'Vue2Juel',
-  components: {ConditionConfig},
+  components: {ConditionConfig, SelectTree},
   props: {
     showExpression: {
       type: Boolean,
       default: () => true
+    },
+    treeOptions: {
+      type: Array,
+      default: () => []
     }
   },
   data() {
@@ -60,7 +67,7 @@ export default {
         {id: 'xxx2', parentId: null, type: 'connector', level: 1, connector: 'AND'},  // 来自 &&
         {id: 'xxx3', parentId: null, type: 'condition', level: 1, attribute: 'age', symbol: '<', value: '2'},
         {id: 'xxx4', parentId: null, type: 'connector', level: 1, connector: 'OR'},   // 来自 ||
-        {id: 'xxx5', parentId: null, type: 'condition', level: 1, attribute: 'sex', symbol: '==', value: '3'},
+        {id: 'xxx5', parentId: null, type: 'condition', level: 1, attribute: 'sex', symbol: '==', value: 'male'},
         {id: 'xxx6', parentId: null, type: 'connector', level: 1, connector: 'AND'},  // 来自 &&
         {
           id: 'xxx7', 
@@ -79,7 +86,15 @@ export default {
       // expression: '${ name == "张三" && (age >= 18 || sex == "男") && (score > 60 && (grade == "A" || level >= 3)) }',
       // expression: '${ (salary > 5000 && (department == "IT" || department == "HR")) || (experience >= 5 && (education == "Master" || education == "PhD")) }',
       // expression: '${ (status == "active" && (age >= 18 && age <= 65)) || (status == "inactive" && (lastLogin > "2023-01-01" || (loginCount > 100 && loginFrequency >= 5))) }',
-      expression: '${ (age > 18 && (name == "John" || name == "Alice")) && (status == "active" || (lastLogin > "2023-01-01" && loginCount > 100)) }',
+      // expression: '${ (age > 18 && (name == "John" || name == "Alice")) && (status == "active" || (lastLogin > "2023-01-01" && loginCount > 100)) }',
+      // expression: '${ age > 18 && name == "John" }',
+      expression: '${ (age > 18 && (name == "John" || name == "Alice")) || (status == "active" && score >= 80) }',
+      // expression: '${ (salary > 5000 && department == "IT") || (experience >= 5 && education == "Master") }',
+      // expression: '${ (status == "active" && (age >= 18 && age <= 65)) || (status == "inactive" && (lastLogin > "2023-01-01" || loginCount > 100)) }',
+      // expression: '${ (status == "active" && (age >= 18 && (score > 60 || grade == "A"))) || (status == "inactive" && lastLogin > "2023-01-01") }',
+      // expression: '${ ((salary > 5000 && department == "IT") || (experience >= 5 && education == "Master")) && (status == "active" || lastLogin > "2023-01-01") }',
+      // expression: '${ (age > 18 && (name == "John" || name == "Alice")) && (status == "active" || (lastLogin > "2023-01-01" && loginCount > 100)) }',
+      // expression: '${ (status == "active" && (age >= 18 && (score > 60 || grade == "A"))) || (status == "inactive" && (lastLogin > "2023-01-01" || loginCount > 100)) && department in ["IT", "HR"] }',
     }
   },
   methods: {
