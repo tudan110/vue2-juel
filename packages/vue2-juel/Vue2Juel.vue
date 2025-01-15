@@ -32,10 +32,14 @@
       </condition-config>
     </div>
 
-    <div v-if="showExpression">
-      <el-button type="primary" size="mini" @click="getExpression()">生成表达式</el-button>
-      <el-button type="primary" size="mini" @click="importJuelExpression()">导入表达式</el-button>
-      <el-button type="primary" size="mini" @click="printCondition()">打印条件</el-button>
+    <div>
+      <el-button type="primary" plain size="mini" @click="getExpression()">确定</el-button>
+    </div>
+
+    <div v-if="showDebugButton">
+      <el-button type="primary" plain size="mini" @click="getExpression()">生成表达式</el-button>
+      <el-button type="primary" plain size="mini" @click="importJuelExpression()">导入表达式</el-button>
+      <el-button type="primary" plain size="mini" @click="printCondition()">打印条件</el-button>
       <p>{{ expression }}</p>
     </div>
 
@@ -50,19 +54,34 @@ export default {
   name: 'Vue2Juel',
   components: {ConditionConfig, SelectTree},
   props: {
-    showExpression: {
+    expression: {
+      type: String,
+      default: () => ''
+    },
+    showDebugButton: {
       type: Boolean,
-      default: () => true
+      default: () => false
     },
     treeOptions: {
       type: Array,
       default: () => []
     }
   },
+  mounted() {
+    this.importJuelExpression(this.expression)
+  },
+  watch: {
+    expression(newVal) {
+      this.importJuelExpression(newVal)
+    }
+  },
   data() {
     return {
       comKey: 'abc',
       condition: [
+        {id: 'xxx1', parentId: null, type: 'condition', level: 1, attribute: '', symbol: '', value: ''},
+      ],
+      /* condition: [
         {id: 'xxx1', parentId: null, type: 'condition', level: 1, attribute: 'name', symbol: '>', value: '1'},
         {id: 'xxx2', parentId: null, type: 'connector', level: 1, connector: 'AND'},  // 来自 &&
         {id: 'xxx3', parentId: null, type: 'condition', level: 1, attribute: 'age', symbol: '<', value: '2'},
@@ -80,7 +99,7 @@ export default {
             {id: 'xxx10', parentId: 'xxx7', type: 'condition', level: 2, attribute: 'sex', symbol: 'in', value: '5'}
           ]
         }
-      ],
+      ], */
       maxLevel: 3,
 
       // expression: '${ name == "张三" && (age >= 18 || sex == "男") && (score > 60 && (grade == "A" || level >= 3)) }',
@@ -88,7 +107,7 @@ export default {
       // expression: '${ (status == "active" && (age >= 18 && age <= 65)) || (status == "inactive" && (lastLogin > "2023-01-01" || (loginCount > 100 && loginFrequency >= 5))) }',
       // expression: '${ (age > 18 && (name == "John" || name == "Alice")) && (status == "active" || (lastLogin > "2023-01-01" && loginCount > 100)) }',
       // expression: '${ age > 18 && name == "John" }',
-      expression: '${ (age > 18 && (name == "John" || name == "Alice")) || (status == "active" && score >= 80) }',
+      // expression: '${ (age > 18 && (name == "John" || name == "Alice")) || (status == "active" && score >= 80) }',
       // expression: '${ (salary > 5000 && department == "IT") || (experience >= 5 && education == "Master") }',
       // expression: '${ (status == "active" && (age >= 18 && age <= 65)) || (status == "inactive" && (lastLogin > "2023-01-01" || loginCount > 100)) }',
       // expression: '${ (status == "active" && (age >= 18 && (score > 60 || grade == "A"))) || (status == "inactive" && lastLogin > "2023-01-01") }',
@@ -132,9 +151,8 @@ export default {
       // JUEL 表达式
       expression = `$\{ ${expression}}`
 
-      this.expression = expression
+      this.$emit('getExpression', expression)
 
-      return expression
     },
     printCondition() {
       console.log(this.condition)
@@ -489,16 +507,16 @@ export default {
     /**
      * 导入JUEL表达式
      */
-    importJuelExpression() {
+    importJuelExpression(expression) {
+      if (!expression) {
+        // this.$message.warning('请输入JUEL表达式');
+        return;
+      }
       try {
-        if (!this.expression) {
-          this.$message.warning('请输入JUEL表达式');
-          return;
-        }
-        this.parseJuelToCondition(this.expression);
-        this.$message.success('导入成功');
+        this.parseJuelToCondition(expression);
+        // this.$message.success('导入成功');
       } catch (error) {
-        this.$message.error('表达式格式错误');
+        // this.$message.error('表达式格式错误');
         console.error('解析JUEL表达式错误:', error);
       }
     }
