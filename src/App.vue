@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Vue2Juel/>
+    <Vue2Juel @getExpression="getExpression" />
   </div>
 </template>
 
@@ -8,7 +8,13 @@
 
 export default {
   name: 'App',
-  components: {}
+  components: {},
+  methods: {
+    getExpression(expression) {
+      console.log(expression)
+      this.$message.info(expression);
+    }
+  }
 }
 </script>
 
