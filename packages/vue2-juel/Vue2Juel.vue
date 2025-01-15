@@ -89,10 +89,10 @@ export default {
         {id: 'xxx5', parentId: null, type: 'condition', level: 1, attribute: 'sex', symbol: '==', value: 'male'},
         {id: 'xxx6', parentId: null, type: 'connector', level: 1, connector: 'AND'},  // 来自 &&
         {
-          id: 'xxx7', 
-          parentId: null, 
-          type: 'conditionGroup', 
-          level: 1, 
+          id: 'xxx7',
+          parentId: null,
+          type: 'conditionGroup',
+          level: 1,
           children: [
             {id: 'xxx8', parentId: 'xxx7', type: 'condition', level: 2, attribute: 'age', symbol: '!=', value: '4'},
             {id: 'xxx9', parentId: 'xxx7', type: 'connector', level: 2, connector: 'OR'},  // 来自组内的 ||
@@ -360,35 +360,35 @@ export default {
      */
     parseJuelToCondition(juelExpression) {
       // 移除 ${ 和 }
-      let expression = juelExpression.trim().replace(/^\${\s*/, '').replace(/\s*}$/, '');
-      this.condition = this.parseExpression(expression);
-      this.comKey = this.getOnlyId(); // 刷新组件
+      let expression = juelExpression.trim().replace(/^\${\s*/, '').replace(/\s*}$/, '')
+      this.condition = this.parseExpression(expression)
+      this.comKey = this.getOnlyId() // 刷新组件
     },
     /**
      * 递归解析表达式
      */
     parseExpression(expr, level = 1, parentId = null) {
-      const result = [];
-      let current = '';
-      let depth = 0;
-      let lastChar = '';
-      
+      const result = []
+      let current = ''
+      let depth = 0
+      let lastChar = ''
+
       // 首先处理最外层的条件
-      const outerMatch = expr.match(/^([^()]+?)(?=\s*&&\s*\(|\s*\|\|\s*\(|$)/);
+      const outerMatch = expr.match(/^([^()]+?)(?=\s*&&\s*\(|\s*\|\|\s*\(|$)/)
       if (outerMatch) {
-        const outerConditions = this.parseExpressionPart(outerMatch[1].trim(), level, parentId);
-        result.push(...outerConditions);
-        expr = expr.slice(outerMatch[0].length);
+        const outerConditions = this.parseExpressionPart(outerMatch[1].trim(), level, parentId)
+        result.push(...outerConditions)
+        expr = expr.slice(outerMatch[0].length)
       }
-      
+
       for (let i = 0; i < expr.length; i++) {
-        const char = expr[i];
-        
+        const char = expr[i]
+
         if (char === '(') {
-          depth++;
+          depth++
           if (depth === 1) {
             // 检查连接符
-            const connectorMatch = current.match(/\s*(&&|\|\|)\s*$/);
+            const connectorMatch = current.match(/\s*(&&|\|\|)\s*$/)
             if (connectorMatch) {
               result.push({
                 id: this.getOnlyId(),
@@ -396,27 +396,27 @@ export default {
                 type: 'connector',
                 level,
                 connector: connectorMatch[1] === '&&' ? 'AND' : 'OR'
-              });
+              })
             }
-            current = '';
-            continue;
+            current = ''
+            continue
           }
         } else if (char === ')') {
-          depth--;
+          depth--
           if (depth === 0) {
-            const groupId = this.getOnlyId();
+            const groupId = this.getOnlyId()
             const group = {
               id: groupId,
               parentId,
               type: 'conditionGroup',
               level,
               children: this.parseExpression(current, level + 1, groupId)
-            };
-            result.push(group);
-            
+            }
+            result.push(group)
+
             // 检查后续的连接符
-            const rest = expr.slice(i + 1);
-            const afterParen = rest.match(/^\s*(&&|\|\|)\s*/);
+            const rest = expr.slice(i + 1)
+            const afterParen = rest.match(/^\s*(&&|\|\|)\s*/)
             if (afterParen) {
               result.push({
                 id: this.getOnlyId(),
@@ -424,40 +424,40 @@ export default {
                 type: 'connector',
                 level,
                 connector: afterParen[1] === '&&' ? 'AND' : 'OR'
-              });
-              i += afterParen[0].length;
+              })
+              i += afterParen[0].length
             }
-            current = '';
-            continue;
+            current = ''
+            continue
           }
         }
-        
+
         if (depth > 0) {
-          current += char;
+          current += char
         } else if (!/\s/.test(char) || lastChar === '\\') {
-          current += char;
+          current += char
         }
-        lastChar = char;
+        lastChar = char
       }
-      
+
       // 处理剩余内容
       if (current.trim()) {
-        const conditions = this.parseExpressionPart(current.trim(), level, parentId);
-        result.push(...conditions);
+        const conditions = this.parseExpressionPart(current.trim(), level, parentId)
+        result.push(...conditions)
       }
-      
-      return result;
+
+      return result
     },
     /**
      * 解析单个条件
      */
     parseCondition(conditionStr, level, parentId) {
       try {
-        const operatorRegex = /([a-zA-Z_][a-zA-Z0-9_]*)\s*(>=|<=|==|!=|>|<|in)\s*(.+)/;
-        const match = conditionStr.trim().match(operatorRegex);
-        
-        if (!match) return null;
-        
+        const operatorRegex = /([a-zA-Z_][a-zA-Z0-9_]*)\s*(>=|<=|==|!=|>|<|in)\s*(.+)/
+        const match = conditionStr.trim().match(operatorRegex)
+
+        if (!match) return null
+
         return {
           id: this.getOnlyId(),
           parentId,
@@ -466,29 +466,29 @@ export default {
           attribute: match[1],
           symbol: match[2],
           value: match[3].trim()
-        };
+        }
       } catch (error) {
-        console.error('解析条件失败:', conditionStr, error);
-        return null;
+        console.error('解析条件失败:', conditionStr, error)
+        return null
       }
     },
     /**
      * 解析表达式片段
      */
     parseExpressionPart(part, level, parentId) {
-      const result = [];
-      if (!part.trim()) return result;
-      
+      const result = []
+      if (!part.trim()) return result
+
       try {
-        const parts = part.split(/\s+(&&|\|\|)\s+/);
-        
+        const parts = part.split(/\s+(&&|\|\|)\s+/)
+
         for (let i = 0; i < parts.length; i++) {
-          const trimmedPart = parts[i].trim();
+          const trimmedPart = parts[i].trim()
           if (trimmedPart) {
             if (i % 2 === 0) {
-              const condition = this.parseCondition(trimmedPart, level, parentId);
+              const condition = this.parseCondition(trimmedPart, level, parentId)
               if (condition) {
-                result.push(condition);
+                result.push(condition)
               }
             } else {
               result.push({
@@ -497,15 +497,15 @@ export default {
                 type: 'connector',
                 level,
                 connector: trimmedPart === '&&' ? 'AND' : 'OR'
-              });
+              })
             }
           }
         }
       } catch (error) {
-        console.error('解析表达式片段失败:', part, error);
+        console.error('解析表达式片段失败:', part, error)
       }
-      
-      return result;
+
+      return result
     },
     /**
      * 导入JUEL表达式
@@ -513,14 +513,14 @@ export default {
     importJuelExpression(expression) {
       if (!expression) {
         // this.$message.warning('请输入JUEL表达式');
-        return;
+        return
       }
       try {
-        this.parseJuelToCondition(expression);
+        this.parseJuelToCondition(expression)
         // this.$message.success('导入成功');
       } catch (error) {
         // this.$message.error('表达式格式错误');
-        console.error('解析JUEL表达式错误:', error);
+        console.error('解析JUEL表达式错误:', error)
       }
     }
   }

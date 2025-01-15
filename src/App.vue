@@ -38,7 +38,7 @@ export default {
   methods: {
     getExpression(expression) {
       console.log(expression)
-      this.$message.info(expression);
+      this.$message.info(expression)
     }
   }
 }
