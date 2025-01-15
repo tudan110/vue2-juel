@@ -4,7 +4,7 @@ Vue2Juel
 
 > A JUEL expression generation component that supports Vue 2
 
-![image-20250115153818158](/Users/tudan/Works/learn/workflow/vue2-juel/README.assets/image-20250115153818158.png)
+![image-20250115153818158](README.assets/image-20250115153818158.png)
 
 <p align='center'>
 <b>English</b> | <a href="https://github.com/tudan110/vue2-juel/blob/main/README.zh-CN.md">简体中文</a>

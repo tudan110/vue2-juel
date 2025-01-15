@@ -4,7 +4,7 @@ Vue2Juel
 
 > 支持 Vue 2 的 JUEL 表达式生成组件。
 
-![image-20250115153818158](/Users/tudan/Works/learn/workflow/vue2-juel/README.assets/image-20250115153818158.png)
+![image-20250115153818158](README.assets/image-20250115153818158.png)
 
 <p align='center'>
 <a href="https://github.com/tudan110/vue2-juel/blob/main/README.md">English</a> | <b>简体中文</b>
