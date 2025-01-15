@@ -36,11 +36,11 @@
       <el-button type="primary" plain size="mini" @click="getExpression()">确定</el-button>
     </div>
 
-    <div v-if="showDebugButton">
+    <div v-if="showDebugButton" style="margin-top: 10px;">
       <el-button type="primary" plain size="mini" @click="getExpression()">生成表达式</el-button>
       <el-button type="primary" plain size="mini" @click="importJuelExpression()">导入表达式</el-button>
       <el-button type="primary" plain size="mini" @click="printCondition()">打印条件</el-button>
-      <p>{{ expression }}</p>
+      <p>{{ debugExpression }}</p>
     </div>
 
   </div>
@@ -60,7 +60,7 @@ export default {
     },
     showDebugButton: {
       type: Boolean,
-      default: () => false
+      default: () => true
     },
     treeOptions: {
       type: Array,
@@ -102,6 +102,7 @@ export default {
       ], */
       maxLevel: 3,
 
+      debugExpression: '',
       // expression: '${ name == "张三" && (age >= 18 || sex == "男") && (score > 60 && (grade == "A" || level >= 3)) }',
       // expression: '${ (salary > 5000 && (department == "IT" || department == "HR")) || (experience >= 5 && (education == "Master" || education == "PhD")) }',
       // expression: '${ (status == "active" && (age >= 18 && age <= 65)) || (status == "inactive" && (lastLogin > "2023-01-01" || (loginCount > 100 && loginFrequency >= 5))) }',
@@ -152,6 +153,8 @@ export default {
       expression = `$\{ ${expression}}`
 
       this.$emit('getExpression', expression)
+
+      this.debugExpression = expression
 
     },
     printCondition() {
