@@ -47,6 +47,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 
 export default {
   name: 'SelectTree',
@@ -156,7 +157,7 @@ export default {
   methods: {
     // 是否为空
     isEmpty(val) {
-      return this._.isEmpty(val)
+      return _.isEmpty(val)
     },
     handleNodeClick(data) {
       if (this.multiple) {
@@ -182,7 +183,7 @@ export default {
       if (checked) {
         this.checkedArray.push(data)
       } else {
-        let checkIndex = this._.findIndex(this.checkedArray, data)
+        let checkIndex = _.findIndex(this.checkedArray, data)
         this.checkedArray.splice(checkIndex, 1)
       }
       // 多选绑定的值是数组
