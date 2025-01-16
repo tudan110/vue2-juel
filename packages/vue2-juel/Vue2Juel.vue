@@ -257,7 +257,21 @@ export default {
           this.deleteAssignNode(condition, row.id)
         }
       }
-      this.setLastGroup()
+
+      // 如果删除后没有条件，保留一个空条件
+      if (this.condition.length === 0) {
+        this.condition.push({
+          id: this.getOnlyId(),
+          parentId: null,
+          type: 'condition',
+          level: 1,
+          attribute: '',
+          symbol: '',
+          value: ''
+        });
+      }
+
+      this.setLastGroup();
     },
     /**
      * 添加一行数据
@@ -531,3 +545,4 @@ export default {
   }
 }
 </style>
+
