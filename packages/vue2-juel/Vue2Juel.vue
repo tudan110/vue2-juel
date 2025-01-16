@@ -127,11 +127,15 @@ export default {
       }
       loopCondition(this.condition)
 
-      // JUEL 表达式
-      expression = `$\{ ${expression}}`
+      // 如果表达式为空，返回 `${}`
+      if (!expression.trim()) {
+        expression = ''
+      } else {
+        // JUEL 表达式
+        expression = `$\{ ${expression}}`;
+      }
 
       this.$emit('getExpression', expression)
-
       this.debugExpression = expression
 
     },
@@ -532,4 +536,3 @@ export default {
   }
 }
 </style>
-
