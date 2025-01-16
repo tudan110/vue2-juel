@@ -1,6 +1,6 @@
 {
   "name": "vue2-juel",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "支持 Vue 2 的 JUEL 表达式生成组件",
   "main": "lib/vue2-juel.umd.js",
   "files": [
