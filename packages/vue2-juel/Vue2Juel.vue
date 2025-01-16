@@ -453,7 +453,7 @@ export default {
      */
     parseCondition(conditionStr, level, parentId) {
       try {
-        const operatorRegex = /([a-zA-Z_][a-zA-Z0-9_]*)\s*(>=|<=|==|!=|>|<|in)\s*(.+)/
+        const operatorRegex = /([a-zA-Z_][a-zA-Z0-9_.]*)\s*(>=|<=|==|!=|>|<|in)\s*(.+)/
         const match = conditionStr.trim().match(operatorRegex)
 
         if (!match) return null
