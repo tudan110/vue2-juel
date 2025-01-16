@@ -127,7 +127,7 @@ export default {
       }
       loopCondition(this.condition)
 
-      // 如果表达式为空，返回 `${}`
+      // 如果表达式为空，返回空字符串
       if (!expression.trim()) {
         expression = ''
       } else {
