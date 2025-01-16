@@ -1,9 +1,6 @@
 <template>
   <div id="app">
-    <Vue2Juel
-      :expression="expression"
-      :tree-options="treeOptions"
-      @getExpression="getExpression" />
+    <Vue2Juel :expression="expression" :tree-options="treeOptions" @getExpression="getExpression" />
   </div>
 </template>
 
@@ -14,24 +11,72 @@ export default {
   components: {},
   data() {
     return {
-      expression: "${ (age > 18 && (name == 'John' || name == 'Alice')) && (status == 'active' || (lastLogin > '2023-01-01' && loginCount > 100)) }",
+      // expression: "${ (age > 18 && (name == 'John' || name == 'Alice')) && (status == 'active' || (lastLogin > '2023-01-01' && loginCount > 100)) }",
+      expression: "${ serviceTask_ae421a8c05224273a51454d7ddcb121e_abilityId_8cc652606dd44143b3d35808df7f3bc6.resultData.TotalRouteNum == null || serviceTask_ae421a8c05224273a51454d7ddcb121e_abilityId_8cc652606dd44143b3d35808df7f3bc6.resultData.TotalRouteNum == '' }",
       treeOptions: [
         {
-          id: 'name',
-          label: 'Tom',
-          children: [
-            {id: 'age', label: 'Age'},
-            {id: 'status', label: 'Status'},
-          ],
+          "id": "bodyIn",
+          "label": "API Body 入参",
+          "disabled": true,
+          "children":
+            [
+              {
+                "id": "in.deviceIp",
+                "label": "deviceIp"
+              },
+              {
+                "id": "in.lranIpAddr",
+                "label": "lranIpAddr"
+              },
+              {
+                "id": "in.rranIpAddr",
+                "label": "rranIpAddr"
+              }
+            ]
         },
         {
-          id: 'login',
-          label: 'Login',
-          children: [
-            {id: 'lastLogin', label: 'Last Login'},
-            {id: 'loginCount', label: 'Login Count'},
-          ],
-        },
+          "id": "serviceTask_ae421a8c05224273a51454d7ddcb121e_abilityId_8cc652606dd44143b3d35808df7f3bc6",
+          "label": "测试指令",
+          "disabled": true,
+          "children":
+            [
+              {
+                "id": "serviceTask_ae421a8c05224273a51454d7ddcb121e_abilityId_8cc652606dd44143b3d35808df7f3bc6.resultId",
+                "label": "结果编码 (resultId)"
+              },
+              {
+                "id": "serviceTask_ae421a8c05224273a51454d7ddcb121e_abilityId_8cc652606dd44143b3d35808df7f3bc6.resultDesc",
+                "label": "结果描述 (resultDesc)"
+              },
+              {
+                "id": "serviceTask_ae421a8c05224273a51454d7ddcb121e_abilityId_8cc652606dd44143b3d35808df7f3bc6.resultData",
+                "label": "结果信息 (resultData)",
+                "children":
+                  [
+                    {
+                      "id": "serviceTask_ae421a8c05224273a51454d7ddcb121e_abilityId_8cc652606dd44143b3d35808df7f3bc6.resultData.TotalRouteNum",
+                      "label": "合计路由数量 (TotalRouteNum)"
+                    },
+                    {
+                      "id": "serviceTask_ae421a8c05224273a51454d7ddcb121e_abilityId_8cc652606dd44143b3d35808df7f3bc6.resultData.PublicRouteNum",
+                      "label": "公共路由数量 (PublicRouteNum)"
+                    },
+                    {
+                      "id": "serviceTask_ae421a8c05224273a51454d7ddcb121e_abilityId_8cc652606dd44143b3d35808df7f3bc6.resultData.PrivateRouteNum",
+                      "label": "私有路由数量 (PrivateRouteNum)"
+                    },
+                    {
+                      "id": "serviceTask_ae421a8c05224273a51454d7ddcb121e_abilityId_8cc652606dd44143b3d35808df7f3bc6.resultData.ClockState",
+                      "label": "时钟状态 (ClockState)"
+                    }
+                  ]
+              },
+              {
+                "id": "serviceTask_ae421a8c05224273a51454d7ddcb121e_abilityId_8cc652606dd44143b3d35808df7f3bc6.resultRaw",
+                "label": "原始报文 (resultRaw)"
+              }
+            ]
+        }
       ]
     }
   },

@@ -1,23 +1,23 @@
 <template>
-  <div class="conditionConfig" :class="{'onlyCondition':onlyCondition}">
+  <div class="conditionConfig" :class="{ 'onlyCondition': onlyCondition }">
     <div v-if="!onlyCondition" class="display-line-bottom"></div>
     <div v-if="!onlyCondition" class="display-line-top"></div>
 
-    <template v-for="(item,index) in condition">
+    <template v-for="(item, index) in condition">
       <!--条件节点-->
-      <div :key="item.id" class="item" v-if="!['conditionGroup','connector'].includes(item.type)"
-           :style="{width:conditionWidth - (item.level - maxLevel) * 52+'px'}">
+      <div :key="item.id" class="item" v-if="!['conditionGroup', 'connector'].includes(item.type)"
+        :style="{ width: conditionWidth - (item.level - maxLevel) * 52 + 'px' }">
         <div class="line"></div>
 
         <slot name="rowContent" v-bind:row="item"></slot>
 
         <div class="operation">
           <el-button type="text" size="small" icon="el-icon-plus"
-                     @click="operationClick('addCondition',item,parentNode, condition, condition[index-1], condition[index+1],parentNodeBefore,parentNodeAfter)"></el-button>
+            @click="operationClick('addCondition', item, parentNode, condition, condition[index - 1], condition[index + 1], parentNodeBefore, parentNodeAfter)"></el-button>
           <el-button type="text" size="small" icon="el-icon-folder-add"
-                     @click="operationClick('addConditionGroup',item,parentNode, condition, condition[index-1], condition[index+1],parentNodeBefore,parentNodeAfter)"></el-button>
+            @click="operationClick('addConditionGroup', item, parentNode, condition, condition[index - 1], condition[index + 1], parentNodeBefore, parentNodeAfter)"></el-button>
           <el-button type="text" size="small" icon="el-icon-delete"
-                     @click="operationClick('deleteNode',item,parentNode, condition, condition[index-1], condition[index+1],parentNodeBefore,parentNodeAfter)"></el-button>
+            @click="operationClick('deleteNode', item, parentNode, condition, condition[index - 1], condition[index + 1], parentNodeBefore, parentNodeAfter)"></el-button>
         </div>
       </div>
 
@@ -35,12 +35,8 @@
       <div :key="item.id" class="item item-group" v-if="item.type === 'conditionGroup'">
         <div class="subItem">
           <div class="line"></div>
-          <condition-config :condition="item.children"
-                            :parentNode="item"
-                            :parentNodeBefore="condition[index-1]"
-                            :parentNodeAfter="condition[index+1]"
-                            :maxLevel="maxLevel"
-                            @nodeClick="operationClick">
+          <condition-config :condition="item.children" :parentNode="item" :parentNodeBefore="condition[index - 1]"
+            :parentNodeAfter="condition[index + 1]" :maxLevel="maxLevel" @nodeClick="operationClick">
             <template v-for="slot in Object.keys($scopedSlots)" #[slot]="scope">
               <slot :name="slot" v-bind:row="scope.row"></slot>
             </template>
@@ -102,14 +98,14 @@ export default {
           for (let i = child.length - 1; i >= 0; i--) {
             let ci = child[i]
             if (['item'].includes(child[child.length - 1].className) && ['display-line-bottom'].includes(ci.className)) {
-              Object.assign(ci.style, {'height': 14 + 'px'})
+              Object.assign(ci.style, { 'height': 14 + 'px' })
               continue
             } else if (!ci.className.includes('display-line-bottom') && !ci.className.includes('display-line-top') && i !== child.length - 1) {
               height += ci.clientHeight
             }
           }
           if (['display-line-bottom'].includes(child[0].className)) {
-            Object.assign(child[0].style, {'height': item.clientHeight - height - 16 + 'px'})
+            Object.assign(child[0].style, { 'height': item.clientHeight - height - 16 + 'px' })
           }
         })
       })

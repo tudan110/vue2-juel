@@ -2,18 +2,9 @@
   <div class="condition-temp">
 
     <div class="condition-temp-con">
-      <condition-config :key="comKey"
-                        :condition="condition"
-                        @nodeClick="nodeClick"
-                        :maxLevel="maxLevel">
+      <condition-config :key="comKey" :condition="condition" @nodeClick="nodeClick" :maxLevel="maxLevel">
         <template slot="rowContent" slot-scope="{row}">
-          <select-tree
-            v-model="row.attribute"
-            :data="treeOptions"
-            size="mini"
-            filterable
-            clearable
-          />
+          <select-tree v-model="row.attribute" :data="treeOptions" size="mini" filterable clearable />
 
           <el-select style="width: 100px" size="mini" v-model="row.symbol" placeholder="请选择">
             <el-option label="==" value="=="></el-option>
@@ -52,7 +43,7 @@ import SelectTree from './components/SelectTree'
 
 export default {
   name: 'Vue2Juel',
-  components: {ConditionConfig, SelectTree},
+  components: { ConditionConfig, SelectTree },
   props: {
     expression: {
       type: String,
@@ -79,7 +70,7 @@ export default {
     return {
       comKey: 'abc',
       condition: [
-        {id: 'xxx1', parentId: null, type: 'condition', level: 1, attribute: '', symbol: '', value: ''},
+        { id: 'xxx1', parentId: null, type: 'condition', level: 1, attribute: '', symbol: '', value: '' },
       ],
       /* condition: [
         {id: 'xxx1', parentId: null, type: 'condition', level: 1, attribute: 'name', symbol: '>', value: '1'},
@@ -168,7 +159,7 @@ export default {
         let data = JSON.parse(JSON.stringify(this.condition))
         this.condition = []
         data[0].children.forEach(item => {
-          this.condition.push({...item, parentId: null, level: 1})
+          this.condition.push({ ...item, parentId: null, level: 1 })
         })
       }
 
@@ -199,7 +190,7 @@ export default {
      * 如果有下一行（after parentNodeAfter 不为空）证明当前行不在最后一行
      */
     nodeClick(type, row, parentNode, condition, before, after, parentNodeBefore, parentNodeAfter) {
-      this[type]({row, parentNode, condition, before, after, parentNodeBefore, parentNodeAfter})
+      this[type]({ row, parentNode, condition, before, after, parentNodeBefore, parentNodeAfter })
 
       this.comKey = this.getOnlyId()
     },
@@ -224,7 +215,7 @@ export default {
      * @param arg
      */
     deleteNode(arg) {
-      let {row, parentNode, condition, before, after, parentNodeBefore, parentNodeAfter} = arg
+      let { row, parentNode, condition, before, after, parentNodeBefore, parentNodeAfter } = arg
       //如果没有父级，证明当前行数据为一级目录
       if (Object.keys(parentNode).length === 0) {
         //如果当前行 前一行没有数据 那就需要删除当前行的下一行
@@ -236,10 +227,10 @@ export default {
         //如果当前分组条件和连接符的总长度为3，证明条件有2个
         let nextChildren = []
         if (condition.length === 3) {
-          condition.forEach(({type, children}) => {
+          condition.forEach(({ type, children }) => {
             if (type === 'conditionGroup' && children && children.length > 0) {
               children.forEach(item => {
-                nextChildren.push({...item, level: item.level - 1, parentId: parentNode.id})
+                nextChildren.push({ ...item, level: item.level - 1, parentId: parentNode.id })
               })
             }
           })
@@ -273,7 +264,7 @@ export default {
      * @param arg
      */
     addCondition(arg) {
-      let {row, condition, after} = arg
+      let { row, condition, after } = arg
       let index = condition.map(i => i.id).indexOf(row.id)
 
       condition.splice(index + 2, 0, {
@@ -297,7 +288,7 @@ export default {
      * @param arg
      */
     addConditionGroup(arg) {
-      let {row, condition, after} = arg
+      let { row, condition, after } = arg
       let index = condition.map(i => i.id).indexOf(row.id)
       let pId = this.getOnlyId()
       let group = {

@@ -1,47 +1,17 @@
 <template>
   <!-- 单选的时候，value绑定id，多选的时候绑定展示名称字符串数组 -->
-  <el-select
-    :title="multiple? optionData.label : ''"
-    ref="select"
-    :value="multiple ? optionData.label : value"
-    placeholder="请选择"
-    :size="size"
-    clearable
-    :filterable="filterable"
-    :filter-method="filterMethod"
-    :disabled="disabled"
-    :multiple="multiple"
-    :collapse-tags="collapseTags"
-    @remove-tag="removeTag"
-    @clear="clear"
-    @visible-change="visibleChange"
-    @focus="focus"
-  >
+  <el-select :title="multiple ? optionData.label : ''" ref="select" :value="multiple ? optionData.label : value"
+    placeholder="请选择" :size="size" clearable :filterable="filterable" :filter-method="filterMethod" :disabled="disabled"
+    :multiple="multiple" :collapse-tags="collapseTags" @remove-tag="removeTag" @clear="clear"
+    @visible-change="visibleChange" @focus="focus">
     <!-- 单选的时候，label绑定展示名称，多选的时候绑定空字符串 -->
-    <el-option
-      ref="option"
-      class="tree-select__option"
-      :value="optionData.id"
-      :label="multiple ? '' : optionData.label"
-    >
-      <el-tree
-        ref="tree"
-        class="tree-select__tree"
-        :class="`tree-select__tree--${multiple ? 'checked' : 'radio'}`"
-        :node-key="nodeKey"
-        :data="data"
-        :props="props"
-        v-bind="treeAttr"
-        :highlight-current="!multiple"
-        :show-checkbox="multiple"
-        :check-strictly="checkStrictly"
-        :expand-on-click-node="multiple"
-        :filter-node-method="filterNode"
-        :default-expand-all="defaultExpandAll"
-        @node-click="handleNodeClick"
-        @current-change="handleCurrentChange"
-        @check-change="handleCheckChange"
-      ></el-tree>
+    <el-option ref="option" class="tree-select__option" :value="optionData.id"
+      :label="multiple ? '' : optionData.label">
+      <el-tree ref="tree" class="tree-select__tree" :class="`tree-select__tree--${multiple ? 'checked' : 'radio'}`"
+        :node-key="nodeKey" :data="data" :props="props" v-bind="treeAttr" :highlight-current="!multiple"
+        :show-checkbox="multiple" :check-strictly="checkStrictly" :expand-on-click-node="multiple"
+        :filter-node-method="filterNode" :default-expand-all="defaultExpandAll" @node-click="handleNodeClick"
+        @current-change="handleCurrentChange" @check-change="handleCheckChange"></el-tree>
     </el-option>
   </el-select>
 </template>
@@ -295,7 +265,7 @@ export default {
   font-weight: 400;
 
   &.tree-select__tree--radio {
-    ::v-deep .el-tree-node.is-current > .el-tree-node__content {
+    ::v-deep .el-tree-node.is-current>.el-tree-node__content {
       color: #409eff;
       font-weight: 700;
     }
@@ -306,7 +276,7 @@ export default {
     font-weight: 700;
   }*/
 
-  ::v-deep .el-tree-node:focus > .el-tree-node__content {
+  ::v-deep .el-tree-node:focus>.el-tree-node__content {
     background-color: #ffffff;
   }
 
@@ -316,5 +286,4 @@ export default {
 ::v-deep .el-tag.el-tag--info .el-tag__close {
   display: none;
 }
-
 </style>
