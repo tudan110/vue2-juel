@@ -23,7 +23,7 @@
       </condition-config>
     </div>
 
-    <div>
+    <div v-if="showGetExpressionButton">
       <el-button type="primary" plain size="mini" @click="getExpression()">确定</el-button>
     </div>
 
@@ -48,6 +48,10 @@ export default {
     expression: {
       type: String,
       default: () => ''
+    },
+    showGetExpressionButton: {
+      type: Boolean,
+      default: () => true
     },
     showDebugButton: {
       type: Boolean,
