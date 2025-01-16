@@ -29,7 +29,7 @@
 
     <div v-if="showDebugButton" style="margin-top: 10px;">
       <el-button type="primary" plain size="mini" @click="getExpression()">生成表达式</el-button>
-      <el-button type="primary" plain size="mini" @click="importJuelExpression()">导入表达式</el-button>
+      <el-button type="primary" plain size="mini" @click="importExpression()">导入表达式</el-button>
       <el-button type="primary" plain size="mini" @click="printCondition()">打印条件</el-button>
       <p>{{ debugExpression }}</p>
     </div>
@@ -63,11 +63,11 @@ export default {
     }
   },
   mounted() {
-    this.importJuelExpression(this.expression)
+    this.importExpression(this.expression)
   },
   watch: {
     expression(newVal) {
-      this.importJuelExpression(newVal)
+      this.importExpression(newVal)
     }
   },
   data() {
@@ -510,7 +510,7 @@ export default {
     /**
      * 导入JUEL表达式
      */
-    importJuelExpression(expression) {
+    importExpression(expression) {
       if (!expression) {
         // this.$message.warning('请输入JUEL表达式');
         return
