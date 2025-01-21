@@ -24,11 +24,11 @@ export default {
       // expression: '${ (age > 18 && (name == "John" || name == "Alice")) && (status == "active" || (lastLogin > "2023-01-01" && loginCount > 100)) }',
       // expression: '${ (status == "active" && (age >= 18 && (score > 60 || grade == "A"))) || (status == "inactive" && (lastLogin > "2023-01-01" || loginCount > 100)) && department in ["IT", "HR"] }',
       // expression: "${ (age > 18 && (name == 'John' || name == 'Alice')) && (status == 'active' || (lastLogin > '2023-01-01' && loginCount > 100)) }",
-      expression: "${ serviceTask_ae421a8c05224273a51454d7ddcb121e_abilityId_8cc652606dd44143b3d35808df7f3bc6.resultData.TotalRouteNum == null || serviceTask_ae421a8c05224273a51454d7ddcb121e_abilityId_8cc652606dd44143b3d35808df7f3bc6.resultData.TotalRouteNum == '' }",
+      expression: "${ serviceTask_ae421a8c05224273a51454d7ddcb121e_abilityId_8cc652606dd44143b3d35808df7f3bc6.resultData.TotalNum == null || serviceTask_ae421a8c05224273a51454d7ddcb121e_abilityId_8cc652606dd44143b3d35808df7f3bc6.resultData.TotalNum == '' }",
       treeOptions: [
         {
           "id": "bodyIn",
-          "label": "API Body 入参",
+          "label": "Body 入参",
           "disabled": true,
           "children":
             [
@@ -48,34 +48,34 @@ export default {
         },
         {
           "id": "serviceTask_ae421a8c05224273a51454d7ddcb121e_abilityId_8cc652606dd44143b3d35808df7f3bc6",
-          "label": "测试指令",
+          "label": "测试环节",
           "disabled": true,
           "children":
             [
               {
                 "id": "serviceTask_ae421a8c05224273a51454d7ddcb121e_abilityId_8cc652606dd44143b3d35808df7f3bc6.resultId",
-                "label": "结果编码 (resultId)"
+                "label": "编码 (resultId)"
               },
               {
                 "id": "serviceTask_ae421a8c05224273a51454d7ddcb121e_abilityId_8cc652606dd44143b3d35808df7f3bc6.resultDesc",
-                "label": "结果描述 (resultDesc)"
+                "label": "描述 (resultDesc)"
               },
               {
                 "id": "serviceTask_ae421a8c05224273a51454d7ddcb121e_abilityId_8cc652606dd44143b3d35808df7f3bc6.resultData",
-                "label": "结果信息 (resultData)",
+                "label": "信息 (resultData)",
                 "children":
                   [
                     {
-                      "id": "serviceTask_ae421a8c05224273a51454d7ddcb121e_abilityId_8cc652606dd44143b3d35808df7f3bc6.resultData.TotalRouteNum",
-                      "label": "合计路由数量 (TotalRouteNum)"
+                      "id": "serviceTask_ae421a8c05224273a51454d7ddcb121e_abilityId_8cc652606dd44143b3d35808df7f3bc6.resultData.TotalNum",
+                      "label": "合计数量 (TotalNum)"
                     },
                     {
-                      "id": "serviceTask_ae421a8c05224273a51454d7ddcb121e_abilityId_8cc652606dd44143b3d35808df7f3bc6.resultData.PublicRouteNum",
-                      "label": "公共路由数量 (PublicRouteNum)"
+                      "id": "serviceTask_ae421a8c05224273a51454d7ddcb121e_abilityId_8cc652606dd44143b3d35808df7f3bc6.resultData.PublicNum",
+                      "label": "公共数量 (PublicNum)"
                     },
                     {
-                      "id": "serviceTask_ae421a8c05224273a51454d7ddcb121e_abilityId_8cc652606dd44143b3d35808df7f3bc6.resultData.PrivateRouteNum",
-                      "label": "私有路由数量 (PrivateRouteNum)"
+                      "id": "serviceTask_ae421a8c05224273a51454d7ddcb121e_abilityId_8cc652606dd44143b3d35808df7f3bc6.resultData.PrivateNum",
+                      "label": "私有数量 (PrivateNum)"
                     },
                     {
                       "id": "serviceTask_ae421a8c05224273a51454d7ddcb121e_abilityId_8cc652606dd44143b3d35808df7f3bc6.resultData.ClockState",
@@ -85,7 +85,7 @@ export default {
               },
               {
                 "id": "serviceTask_ae421a8c05224273a51454d7ddcb121e_abilityId_8cc652606dd44143b3d35808df7f3bc6.resultRaw",
-                "label": "原始报文 (resultRaw)"
+                "label": "报文 (resultRaw)"
               }
             ]
         }
