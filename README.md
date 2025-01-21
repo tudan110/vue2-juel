@@ -1,4 +1,4 @@
-# Vue2 + JS + Webpack For SFC template
+# Vue2 + JS + Webpack For JUEL expression generation
 
 Vue2Juel
 
