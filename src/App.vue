@@ -24,7 +24,7 @@ export default {
       // expression: '${ (age > 18 && (name == "John" || name == "Alice")) && (status == "active" || (lastLogin > "2023-01-01" && loginCount > 100)) }',
       // expression: '${ (status == "active" && (age >= 18 && (score > 60 || grade == "A"))) || (status == "inactive" && (lastLogin > "2023-01-01" || loginCount > 100)) && department in ["IT", "HR"] }',
       // expression: "${ (age > 18 && (name == 'John' || name == 'Alice')) && (status == 'active' || (lastLogin > '2023-01-01' && loginCount > 100)) }",
-      expression: "${ serviceTask_ae421a8c05224273a51454d7ddcb121e_abilityId_8cc652606dd44143b3d35808df7f3bc6.resultData.TotalNum == null || serviceTask_ae421a8c05224273a51454d7ddcb121e_abilityId_8cc652606dd44143b3d35808df7f3bc6.resultData.TotalNum == '' }",
+      /*expression: "${ serviceTask_ae421a8c05224273a51454d7ddcb121e_abilityId_8cc652606dd44143b3d35808df7f3bc6.resultData.TotalNum == null || serviceTask_ae421a8c05224273a51454d7ddcb121e_abilityId_8cc652606dd44143b3d35808df7f3bc6.resultData.TotalNum == '' }",
       treeOptions: [
         {
           "id": "bodyIn",
@@ -89,6 +89,25 @@ export default {
               }
             ]
         }
+      ]*/
+      expression: "${ (age > 18 && (name == 'John' || name == 'Alice')) && (status == 'active' || (lastLogin > '2023-01-01' && loginCount > 100)) }",
+      treeOptions: [
+        {
+          id: 'name',
+          label: 'Name',
+          children: [
+            {id: 'age', label: 'Age'},
+            {id: 'status', label: 'Status'},
+          ],
+        },
+        {
+          id: 'login',
+          label: 'Login',
+          children: [
+            {id: 'lastLogin', label: 'Last Login'},
+            {id: 'loginCount', label: 'Login Count'},
+          ],
+        },
       ]
     }
   },
