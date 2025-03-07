@@ -1,0 +1,26 @@
+name: Build Image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Pnpm and Install
+        uses: seepine/action-setup-pnpm@v1
+
+      - name: Docker build push
+        uses: seepine/action-docker-build-push@v1
+        with:
+          registry: ${{ vars.DOCKER_REGISTRY }}
+          username: ${{ vars.DOCKER_USERNAME }}
+          password: ${{ vars.DOCKER_PASSWORD }}
+          file: Dockerfile
+          platforms: linux/amd64,linux/arm64
