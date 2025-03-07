@@ -24,24 +24,7 @@ jobs:
       - name: Build project
         run: npm run build
 
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: dist
-          path: dist
-
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-      - name: Download build artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: dist
-          path: dist
-
-      - name: Install Docker test7
+      - name: Install Docker
         uses: papodaca/install-docker-action@main
 
       - name: Log in to private Docker registry
