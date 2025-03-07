@@ -41,7 +41,7 @@ jobs:
           name: dist
           path: dist
 
-      - name: Install Docker
+      - name: Install Docker test
         uses: papodaca/install-docker-action@main
 
       - name: Log in to private Docker registry
