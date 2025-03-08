@@ -10,11 +10,16 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: gitea/runner-images:ubuntu-latest
+      env:
+        TZ: Asia/Shanghai
       # 方法二，手动指定持久化目录
       volumes:
         - /Users/tudan/docker_data/app/gitea/runner/cache/toolcache:/opt/hostedtoolcache
         - /etc/timezone:/etc/timezone:ro
         - /etc/localtime:/etc/localtime:ro
+    env:
+      # 方法一，指定容器将工具缓存路径存放到 /toolcache ，该目录actRunner会默认持久化它
+      RUNNER_TOOL_CACHE: /toolcache
 
     steps:
       - name: Checkout code
