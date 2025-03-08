@@ -10,38 +10,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. 设置时区为 Asia/Shanghai（修正参数名）
-      - name: Set timezone
-        uses: szenius/set-timezone@v2.0
-        with:
-          timezone: Asia/Shanghai  # 原参数 timezoneLinux 错误，改为 timezone
 
-      # 2. 验证时区是否生效
-      - name: Check timezone
-        run: |
-          echo "Current timezone: $(date +%Z)"
-          date
-
-      # 3. 检出代码
+      # 1. 检出代码
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 4. 设置 Node.js
+      # 2. 设置 Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
 
-      # 5. 安装依赖
+      # 3. 安装依赖
       - name: Install dependencies
         run: npm ci
 
-      # 6. 构建项目
+      # 4. 构建项目
       - name: Build project
         run: npm run build
 
-      # 7. 登录 Docker 仓库（使用 secrets 保护敏感信息）
+      # 5. 登录 Docker 仓库（使用 secrets 保护敏感信息）
       - name: Log in to private Docker Registry
         uses: docker/login-action@v3
         with:
@@ -49,7 +38,7 @@ jobs:
           username: ${{ vars.DOCKER_USERNAME }}
           password: ${{ vars.DOCKER_PASSWORD }}
 
-      # 8. 构建并推送镜像（强制使用上海时区生成时间戳）
+      # 6. 构建并推送镜像（强制使用上海时区生成时间戳）
       - name: Build and Push Docker Image
         run: |
           # 方法 1: 直接使用 date 命令（依赖系统时区）
