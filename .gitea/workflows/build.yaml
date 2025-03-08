@@ -35,7 +35,7 @@ jobs:
 
       # 5. 安装依赖
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       # 6. 构建项目
       - name: Build project
