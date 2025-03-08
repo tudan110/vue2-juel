@@ -10,11 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: gitea/runner-images:ubuntu-latest
-      env:
-        TZ: Asia/Shanghai
-    env:
-      # 方法一，指定容器将工具缓存路径存放到 /toolcache ，该目录actRunner会默认持久化它
-      RUNNER_TOOL_CACHE: /toolcache
+      # 方法二，手动指定持久化目录
+      volumes:
+        - /Users/tudan/docker_data/app/gitea/runner/cache/toolcache:/opt/hostedtoolcache
+        - /etc/timezone:/etc/timezone:ro
+        - /etc/localtime:/etc/localtime:ro
 
     steps:
       - name: Checkout code
@@ -43,6 +43,5 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          pwd
           docker build -t ${{ vars.DOCKER_REGISTRY }}/tudan/vue2-juel:$(date +%Y%m%d%H) .
           docker push ${{ vars.DOCKER_REGISTRY }}/tudan/vue2-juel:$(date +%Y%m%d%H)
