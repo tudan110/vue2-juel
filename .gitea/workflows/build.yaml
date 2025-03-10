@@ -13,29 +13,30 @@ jobs:
       DOCKER_REGISTRY: ${{ vars.DOCKER_REGISTRY }}
       IMAGE_NAME: tudan/vue2-juel
       TZ: Asia/Shanghai  # 统一设置时区
+      TAG: ${{ github.run_number }}-${{ github.run_attempt }}
 
     steps:
 
-      # 1. 检出代码
+      # 检出代码
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. 设置 Node.js
+      # 设置 Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
 
-      # 3. 安装依赖
+      # 安装依赖
       - name: Install dependencies
         run: npm ci
 
-      # 4. 构建项目
+      # 构建项目
       - name: Build project
         run: npm run build
 
-      # 5. 登录 Docker 仓库（使用 secrets 保护敏感信息）
+      # 登录 Docker 仓库（使用 secrets 保护敏感信息）
       - name: Log in to private Docker Registry
         uses: docker/login-action@v3
         with:
@@ -43,11 +44,32 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # 6. 构建并推送镜像（强制使用上海时区生成时间戳）
+      # 新增时间戳生成步骤
+      - name: Generate Timestamp
+        id: timestamp
+        run: echo "TIMESTAMP=$(TZ=Asia/Shanghai date +%Y%m%d%H%M)" >> $GITHUB_ENV
+
+      # 构建并推送镜像（使用 BuildKit 和多平台支持）
       - name: Build and Push Docker Image
-        run: |
-          # 显式指定时区（更可靠）%Y%m%d%H%M
-          export TAG=$(TZ=Asia/Shanghai date +%Y%m%d%H%M)
-          
-          docker build -t ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}:$TAG .
-          docker push ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}:$TAG
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile
+          platforms: linux/amd64 # 根据需求调整平台
+          push: true
+          tags: |
+            ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+            ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-${{ env.TIMESTAMP }}
+            ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TIMESTAMP }}
+          cache-from: type=gha # 启用 GitHub Actions 缓存
+          cache-to: type=gha,mode=max
+
+      # 构建并推送镜像（强制使用上海时区生成时间戳）
+#      - name: Build and Push Docker Image
+#        run: |
+#          # 显式指定时区（更可靠）%Y%m%d%H%M
+#          export TAG=$(TZ=Asia/Shanghai date +%Y%m%d%H%M)
+#
+#          docker build -t ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}:$TAG .
+#          docker push ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}:$TAG
