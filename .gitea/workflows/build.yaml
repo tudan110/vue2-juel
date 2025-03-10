@@ -4,10 +4,15 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:  # 允许手动触发
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      DOCKER_REGISTRY: ${{ vars.DOCKER_REGISTRY }}
+      IMAGE_NAME: tudan/vue2-juel
+      TZ: Asia/Shanghai  # 统一设置时区
 
     steps:
 
@@ -34,19 +39,15 @@ jobs:
       - name: Log in to private Docker Registry
         uses: docker/login-action@v3
         with:
-          registry: ${{ vars.DOCKER_REGISTRY }}
+          registry: ${{ env.DOCKER_REGISTRY }}
           username: ${{ vars.DOCKER_USERNAME }}
           password: ${{ vars.DOCKER_PASSWORD }}
 
       # 6. 构建并推送镜像（强制使用上海时区生成时间戳）
       - name: Build and Push Docker Image
         run: |
-          # 方法 1: 直接使用 date 命令（依赖系统时区）
-          # export TAG=$(date +%Y%m%d%H%M)
-          # echo "Generated tag: $TAG"
-          
-          # 方法 2: 显式指定时区（更可靠）%Y%m%d%H%M
+          # 显式指定时区（更可靠）%Y%m%d%H%M
           export TAG=$(TZ=Asia/Shanghai date +%Y%m%d%H%M)
           
-          docker build -t ${{ vars.DOCKER_REGISTRY }}/tudan/vue2-juel:$TAG .
-          docker push ${{ vars.DOCKER_REGISTRY }}/tudan/vue2-juel:$TAG
+          docker build -t ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}:$TAG .
+          docker push ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}:$TAG
