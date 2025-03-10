@@ -10,10 +10,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
+      TZ: Asia/Shanghai  # 统一设置时区
       DOCKER_REGISTRY: ${{ vars.DOCKER_REGISTRY }}
       IMAGE_NAME: tudan/vue2-juel
-      TZ: Asia/Shanghai  # 统一设置时区
-      TAG: ${{ github.run_number }}-${{ github.run_attempt }}
 
     steps:
 
@@ -27,6 +26,7 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
+          cache-dependency-path: package-lock.json
 
       # 安装依赖
       - name: Install dependencies
@@ -34,7 +34,9 @@ jobs:
 
       # 构建项目
       - name: Build project
-        run: npm run build
+        run: |
+          npm run build
+          echo "Build completed at $(TZ=Asia/Shanghai date +'%Y-%m-%d %H:%M:%S')"
 
       # 登录 Docker 仓库（使用 secrets 保护敏感信息）
       - name: Log in to private Docker Registry
@@ -47,7 +49,7 @@ jobs:
       # 新增时间戳生成步骤
       - name: Generate Timestamp
         id: timestamp
-        run: echo "TIMESTAMP=$(TZ=Asia/Shanghai date +%Y%m%d%H%M)" >> $GITHUB_ENV
+        run: echo "TIMESTAMP=$(TZ=Asia/Shanghai date +%Y%m%d%H%M)" >> $GITHUB_OUTPUT
 
       # 构建并推送镜像（使用 BuildKit 和多平台支持）
       - name: Build and Push Docker Image
@@ -60,16 +62,4 @@ jobs:
           tags: |
             ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}:latest
             ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-            ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG }}-${{ env.TIMESTAMP }}
-            ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TIMESTAMP }}
-          cache-from: type=gha # 启用 GitHub Actions 缓存
-          cache-to: type=gha,mode=max
-
-      # 构建并推送镜像（强制使用上海时区生成时间戳）
-#      - name: Build and Push Docker Image
-#        run: |
-#          # 显式指定时区（更可靠）%Y%m%d%H%M
-#          export TAG=$(TZ=Asia/Shanghai date +%Y%m%d%H%M)
-#
-#          docker build -t ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}:$TAG .
-#          docker push ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}:$TAG
+            ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.timestamp.outputs.TIMESTAMP }}
