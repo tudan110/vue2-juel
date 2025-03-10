@@ -12,7 +12,7 @@ jobs:
     env:
       TZ: Asia/Shanghai  # 统一设置时区
       DOCKER_REGISTRY: ${{ vars.DOCKER_REGISTRY }}
-      IMAGE_NAME: tudan/vue2-juel
+      IMAGE_NAME: vue2-juel
 
     steps:
 
@@ -60,6 +60,6 @@ jobs:
           platforms: linux/amd64 # 根据需求调整平台
           push: true
           tags: |
-            ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-            ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-            ${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.timestamp.outputs.TIMESTAMP }}
+            ${{ env.DOCKER_REGISTRY }}/${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:latest
+            ${{ env.DOCKER_REGISTRY }}/${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+            ${{ env.DOCKER_REGISTRY }}/${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:${{ steps.timestamp.outputs.TIMESTAMP }}
